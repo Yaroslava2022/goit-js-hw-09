@@ -2,6 +2,7 @@
 import flatpickr from "flatpickr";
 // Додатковий імпорт стилів
 import "flatpickr/dist/flatpickr.min.css";
+import Notiflix from 'notiflix';
 const datetimePicker = document.querySelector("#datetime-picker");
 const startButton = document.querySelector('[data-start]');
 const daysElement = document.querySelector('[data-days]');
@@ -9,99 +10,51 @@ const hoursElement = document.querySelector('[data-hours]');
 const minutesElement = document.querySelector('[data-minutes]');
 const secondsElement = document.querySelector('[data-seconds]');
 startButton.disabled = true; 
+
 const options = {
     enableTime: true,
     time_24hr: true,
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-        console.log(selectedDates[0]);
-        // const currentDate = new Date();
-       
-        if (selectedDates[0] < new Date()) {
           
-           window.alert('Please choose a date in the future');
+        if (selectedDates[0] < new Date()) {
+            Notiflix.Notify.failure('Please choose a date in the future');
+
+        //    window.alert('Please choose a date in the future');
           return;
         } else {
             startButton.disabled = false;
-            startButton.addEventListener('click', () => {
-    
-                startButton.disabled = true;              
-                    const intervalId = setInterval(() => {
-                  
-                        const deltaTime = selectedDates[0] - new Date();
-                        
-                        const time = convertMs(deltaTime);
-                       
-                        daysElement.innerText = addLeadingZero(time.days);
-                        hoursElement.innerText = addLeadingZero(time.hours);
-                        minutesElement.innerText = addLeadingZero(time.minutes);
-                        secondsElement.innerText = addLeadingZero(time.seconds);
-                        
-                        if (deltaTime <= 1000) {
-                          clearInterval(intervalId);
-                        }
-                      }, 1000);
-                
-             
-      
-           
-          }); 
         }
     },
   };
 
   flatpickr(datetimePicker, options) ;
-  
-
-    
+      
  
-//   startButton.addEventListener('click', () => {
+  startButton.addEventListener('click', () => {
     
-//         const currentDate = new Date();
-//         const selectedDate = new Date(datetimePicker.value);
-//         if (selectedDate < currentDate) {
-//             startButton.disabled = true; 
-//            window.alert('Please choose a date in the future');
-          
-//         } else  {
-//             startButton.disabled = false;
-//             const intervalId = setInterval(() => {
-          
-//                 const deltaTime = selectedDate - new Date();
-                
-//                 const time = convertMs(deltaTime);
-               
-//                 daysElement.innerText = addLeadingZero(time.days);
-//                 hoursElement.innerText = addLeadingZero(time.hours);
-//                 minutesElement.innerText = addLeadingZero(time.minutes);
-//                 secondsElement.innerText = addLeadingZero(time.seconds);
-                
-//                 if (deltaTime <= 1000) {
-//                   clearInterval(intervalId);
-//                 }
-//               }, 1000);
+        const selectedDate = new Date(datetimePicker.value);
         
-//       };
-//     // const currentDate = new Date();
-//     // const selectedDate = new Date(datetimePicker.value);
-//     // if (selectedDate < currentDate) {
-     
-//     //   window.alert('Please choose a date in the future');
-//     //   return;
-//     // }
+            const intervalId = setInterval(() => {
+          
+                const deltaTime = selectedDate - new Date();
+                
+                const time = convertMs(deltaTime);
+               
+                daysElement.innerText = addLeadingZero(time.days);
+                hoursElement.innerText = addLeadingZero(time.hours);
+                minutesElement.innerText = addLeadingZero(time.minutes);
+                secondsElement.innerText = addLeadingZero(time.seconds);
+                
+                if (deltaTime <= 1000) {
+                  clearInterval(intervalId);
+                }
+              }, 1000);
+        
+      
     
-//     // const deltaTime = selectedDate - currentDate;
-   
-//     // const time = convertMs(deltaTime);
-   
-//     // daysElement.innerText = addLeadingZero(time.days);
-//     // hoursElement.innerText = addLeadingZero(time.hours);
-//     // minutesElement.innerText = addLeadingZero(time.minutes);
-//     // secondsElement.innerText = addLeadingZero(time.seconds);
-    
-   
-//   });
+  });
   function convertMs(ms) {
     
     const second = 1000;
