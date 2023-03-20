@@ -35,7 +35,7 @@ const handleCreatePromise = event => {
       .catch(({ position, delay }) =>
       Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`)
       );
-    delay = delay + delayStep*i;
+    delay += delayStep;
   }
 };
 
